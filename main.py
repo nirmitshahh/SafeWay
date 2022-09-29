@@ -6,6 +6,7 @@ Main entry point for the simulation
 
 import argparse
 import sys
+import pygame
 from simulation.map import Map
 from simulation.world import World
 from simulation.scenario import load_scenario, create_vehicles_from_scenario
@@ -117,6 +118,5 @@ def main():
 
 
 if __name__ == '__main__':
-    import pygame
     main()
 
