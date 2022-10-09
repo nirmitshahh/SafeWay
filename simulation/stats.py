@@ -24,7 +24,7 @@ class Statistics:
     
     def record_near_miss(self):
         """Record a near miss"""
-        self.near_miss += 1
+        self.near_misses += 1
     
     def record_yield(self):
         """Record a yield event"""
