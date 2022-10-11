@@ -172,10 +172,11 @@ class Renderer:
                 pygame.draw.line(self.screen, (200, 200, 255), 
                                vehicle_pos, other_pos, 1)
     
-    def draw_ui(self, time: float, step: int, mode: str, num_vehicles: int):
+    def draw_ui(self, time: float, step: int, mode: str, num_vehicles: int, 
+                collisions: int = 0, messages: int = 0):
         """Draw UI overlay"""
         # Background panel
-        panel_rect = pygame.Rect(10, 10, 300, 120)
+        panel_rect = pygame.Rect(10, 10, 300, 150)
         pygame.draw.rect(self.screen, (240, 240, 240, 200), panel_rect)
         pygame.draw.rect(self.screen, self.BLACK, panel_rect, 2)
         
@@ -192,6 +193,14 @@ class Renderer:
         
         vehicles_text = self.font.render(f"Vehicles: {num_vehicles}", True, self.BLACK)
         self.screen.blit(vehicles_text, (20, y_offset + 75))
+        
+        if collisions > 0:
+            collision_text = self.font.render(f"Collisions: {collisions}", True, self.RED)
+            self.screen.blit(collision_text, (20, y_offset + 100))
+        
+        if messages > 0:
+            msg_text = self.small_font.render(f"Messages: {messages}", True, self.BLACK)
+            self.screen.blit(msg_text, (20, y_offset + 125))
         
         # Legend
         legend_y = self.height - 150
