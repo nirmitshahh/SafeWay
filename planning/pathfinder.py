@@ -43,6 +43,7 @@ class PathFinder:
             return [end_pos]
         
         # A* algorithm
+        # Use priority queue for open set
         open_set = [(0, start_node)]
         came_from: Dict[int, Optional[int]] = {start_node: None}
         g_score: Dict[int, float] = {start_node: 0}
@@ -77,6 +78,14 @@ class PathFinder:
         
         # No path found
         return []
+    
+    def find_path_smooth(self, start_pos: Tuple[float, float], 
+                        end_pos: Tuple[float, float]) -> List[Tuple[float, float]]:
+        """Find path and smooth it"""
+        path = self.find_path(start_pos, end_pos)
+        if path:
+            return self.smooth_path(path)
+        return path
     
     def smooth_path(self, path: List[Tuple[float, float]], 
                    lookahead: int = 3) -> List[Tuple[float, float]]:
