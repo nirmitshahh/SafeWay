@@ -65,13 +65,21 @@ class ConflictResolver:
         Determine if vehicle should yield to others
         Returns (should_yield, vehicle_id_to_yield_to)
         """
+        closest_conflict = None
+        min_ttc = float('inf')
+        
         for message in other_messages:
             ttc = self.predict_collision_with_message(vehicle, message, dt)
             if ttc is not None and ttc < 2.0:  # collision within 2 seconds
-                # Simple right-of-way: vehicle with lower ID has priority
-                # (in real system, could use other rules)
-                if vehicle.id > message.sender_id:
-                    return (True, message.sender_id)
+                if ttc < min_ttc:
+                    min_ttc = ttc
+                    closest_conflict = message
+        
+        if closest_conflict:
+            # Simple right-of-way: vehicle with lower ID has priority
+            # (in real system, could use other rules like distance to intersection)
+            if vehicle.id > closest_conflict.sender_id:
+                return (True, closest_conflict.sender_id)
         
         return (False, None)
     
