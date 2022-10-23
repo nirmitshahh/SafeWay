@@ -55,8 +55,6 @@ class VehicleController:
         self.vehicle.heading += turn
         
         # Normalize heading to [0, 2*pi]
-        while self.vehicle.heading < 0:
-            self.vehicle.heading += 2 * np.pi
-        while self.vehicle.heading >= 2 * np.pi:
-            self.vehicle.heading -= 2 * np.pi
+        from utils import normalize_angle
+        self.vehicle.heading = normalize_angle(self.vehicle.heading)
 
