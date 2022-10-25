@@ -62,6 +62,20 @@ class World:
         # Update positions
         for vehicle in self.vehicles.values():
             vehicle.update_position(self.dt)
+        
+        # Check for collisions
+        self._check_collisions()
+    
+    def _check_collisions(self):
+        """Check for collisions between vehicles"""
+        vehicle_list = list(self.vehicles.values())
+        for i, v1 in enumerate(vehicle_list):
+            for v2 in vehicle_list[i+1:]:
+                dist = np.sqrt((v1.x - v2.x)**2 + (v1.y - v2.y)**2)
+                if dist < 1.5:  # collision threshold
+                    # Stop both vehicles
+                    v1.stop()
+                    v2.stop()
     
     def _process_v2v_communication(self):
         """Process V2V message broadcasting and delivery"""
