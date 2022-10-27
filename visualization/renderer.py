@@ -29,10 +29,16 @@ class Renderer:
         self.ORANGE = (255, 165, 0)
         self.PURPLE = (128, 0, 128)
         
-        # Vehicle colors
+        # Vehicle colors (more distinct)
         self.vehicle_colors = [
-            (255, 100, 100), (100, 255, 100), (100, 100, 255),
-            (255, 255, 100), (255, 100, 255), (100, 255, 255)
+            (220, 50, 50),   # red
+            (50, 220, 50),   # green
+            (50, 50, 220),   # blue
+            (220, 180, 50),  # yellow
+            (220, 50, 220),  # magenta
+            (50, 220, 220),  # cyan
+            (180, 50, 220),  # purple
+            (220, 120, 50)   # orange
         ]
         
         self.font = pygame.font.Font(None, 24)
