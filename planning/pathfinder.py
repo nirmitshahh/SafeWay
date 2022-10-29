@@ -37,7 +37,8 @@ class PathFinder:
         end_node = self.find_closest_node(end_pos[0], end_pos[1])
         
         if start_node is None or end_node is None:
-            return []
+            # Fallback: direct path if no nodes found
+            return [start_pos, end_pos]
         
         if start_node == end_node:
             return [end_pos]
