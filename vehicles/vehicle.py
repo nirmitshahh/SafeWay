@@ -130,7 +130,7 @@ class Vehicle:
     def accelerate(self, dt: float):
         """Accelerate toward preferred speed"""
         if self.speed < self.preferred_speed:
-            self.speed = min(self.speed + self.acceleration * dt, self.preferred_speed)
+            self.speed = min(self.speed + self.acceleration * dt, self.preferred_speed, self.max_speed)
     
     def decelerate(self, dt: float, target_speed: float = 0.0):
         """Decelerate"""
