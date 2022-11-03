@@ -20,6 +20,11 @@ class CommunicationBus:
         # Message queues for delayed delivery
         self.message_queue: List[Tuple[float, V2VMessage, int]] = []  # (delivery_time, message, receiver_id)
         self.current_time = 0.0
+        
+        # Statistics
+        self.messages_sent = 0
+        self.messages_delivered = 0
+        self.messages_dropped = 0
     
     def update_time(self, dt: float):
         """Update simulation time"""
@@ -42,11 +47,14 @@ class CommunicationBus:
                           (sender_pos[1] - vehicle_pos[1])**2)
             
             if dist <= self.broadcast_radius:
+                self.messages_sent += 1
                 # Check packet drop
                 if random.random() > self.packet_drop_rate:
                     # Calculate delivery time with latency
                     delivery_time = self.current_time + self.latency
                     self.message_queue.append((delivery_time, message, vehicle_id))
+                else:
+                    self.messages_dropped += 1
         
         return delivered_messages
     
@@ -60,6 +68,7 @@ class CommunicationBus:
         for delivery_time, message, receiver_id in self.message_queue:
             if receiver_id == vehicle_id and delivery_time <= self.current_time:
                 messages.append(message)
+                self.messages_delivered += 1
             else:
                 remaining_queue.append((delivery_time, message, receiver_id))
         
