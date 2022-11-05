@@ -136,9 +136,14 @@ class Renderer:
         # Draw planned trajectory (short-term)
         if vehicle.planned_trajectory and show_trajectory:
             traj_points = [self.world_to_screen(p[0], p[1]) 
-                          for p in vehicle.planned_trajectory[:5]]
+                          for p in vehicle.planned_trajectory[:8]]
             if len(traj_points) > 1:
-                pygame.draw.lines(self.screen, self.YELLOW, False, traj_points, 1)
+                # Draw trajectory with fading opacity effect
+                for i in range(len(traj_points) - 1):
+                    alpha = 255 - (i * 30)
+                    alpha = max(50, alpha)
+                    color = (255, 255, 0)  # yellow
+                    pygame.draw.line(self.screen, color, traj_points[i], traj_points[i+1], 1)
         
         # Draw intent indicator
         if show_intent:
