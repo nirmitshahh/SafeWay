@@ -37,6 +37,10 @@ def main():
     # Load map
     try:
         map_obj = Map.load_from_json(args.map)
+        print(f"Loaded map: {args.map}")
+    except FileNotFoundError:
+        print(f"Error: Map file not found: {args.map}")
+        sys.exit(1)
     except Exception as e:
         print(f"Error loading map: {e}")
         sys.exit(1)
@@ -45,6 +49,10 @@ def main():
     try:
         scenario_data = load_scenario(args.scenario)
         vehicles = create_vehicles_from_scenario(scenario_data)
+        print(f"Loaded scenario: {args.scenario} ({len(vehicles)} vehicles)")
+    except FileNotFoundError:
+        print(f"Error: Scenario file not found: {args.scenario}")
+        sys.exit(1)
     except Exception as e:
         print(f"Error loading scenario: {e}")
         sys.exit(1)
