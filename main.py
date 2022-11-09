@@ -82,6 +82,7 @@ def main():
     # Main simulation loop
     running = True
     paused = False
+    pause_key_pressed = False
     
     print("SafeWay Simulation Started")
     print(f"Mode: {args.mode}")
@@ -94,11 +95,17 @@ def main():
         # Handle events
         running = renderer.handle_events()
         
-        # Handle keyboard input
+        # Handle keyboard input for pause
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_SPACE] and not pause_key_pressed:
             paused = not paused
-            pygame.time.wait(200)  # Debounce
+            pause_key_pressed = True
+            if paused:
+                print("Simulation paused")
+            else:
+                print("Simulation resumed")
+        elif not keys[pygame.K_SPACE]:
+            pause_key_pressed = False
         
         if not paused:
             # Update simulation
