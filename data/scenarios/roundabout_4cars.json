@@ -1,0 +1,49 @@
+{
+  "vehicles": [
+    {
+      "id": 0,
+      "spawn_x": 50,
+      "spawn_y": 15,
+      "destination_x": 85,
+      "destination_y": 50,
+      "initial_heading": 1.57,
+      "initial_speed": 3.0,
+      "preferred_speed": 4.0,
+      "aggressiveness": 0.5
+    },
+    {
+      "id": 1,
+      "spawn_x": 85,
+      "spawn_y": 50,
+      "destination_x": 50,
+      "destination_y": 85,
+      "initial_heading": 3.14,
+      "initial_speed": 3.0,
+      "preferred_speed": 4.0,
+      "aggressiveness": 0.5
+    },
+    {
+      "id": 2,
+      "spawn_x": 50,
+      "spawn_y": 85,
+      "destination_x": 15,
+      "destination_y": 50,
+      "initial_heading": -1.57,
+      "initial_speed": 3.0,
+      "preferred_speed": 4.0,
+      "aggressiveness": 0.5
+    },
+    {
+      "id": 3,
+      "spawn_x": 15,
+      "spawn_y": 50,
+      "destination_x": 50,
+      "destination_y": 15,
+      "initial_heading": 0.0,
+      "initial_speed": 3.0,
+      "preferred_speed": 4.0,
+      "aggressiveness": 0.5
+    }
+  ]
+}
+
