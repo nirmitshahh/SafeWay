@@ -95,11 +95,24 @@ class ConflictResolver:
             vehicle.is_yielding = True
             vehicle.yield_target = yield_to
             vehicle.intent = Intent.YIELD
-            # Slow down
-            vehicle.decelerate(dt, target_speed=vehicle.preferred_speed * 0.5)
+            # Slow down more aggressively at intersections
+            vehicle.decelerate(dt, target_speed=vehicle.preferred_speed * 0.4)
         else:
-            vehicle.is_yielding = False
-            vehicle.yield_target = None
+            # Check if we can resume normal speed
+            if vehicle.is_yielding and vehicle.yield_target == yield_to:
+                # Clear yield state if threat has passed
+                dist_to_threat = None
+                for msg in other_messages:
+                    if msg.sender_id == yield_to:
+                        import numpy as np
+                        dist_to_threat = np.sqrt((vehicle.x - msg.position[0])**2 + 
+                                                (vehicle.y - msg.position[1])**2)
+                        break
+                
+                if dist_to_threat is None or dist_to_threat > self.safety_buffer * 3:
+                    vehicle.is_yielding = False
+                    vehicle.yield_target = None
+                    vehicle.intent = Intent.STRAIGHT
     
     def resolve_merge_conflict(self, vehicle: Vehicle, 
                               other_messages: List[V2VMessage],
