@@ -123,7 +123,10 @@ def main():
             renderer.draw_vehicle(vehicle, show_trajectory=True, show_intent=True)
         
         # Draw UI
-        renderer.draw_ui(world.time, world.step_count, args.mode.upper(), len(vehicles))
+        collisions = 0  # TODO: integrate with stats
+        messages = world.comm_bus.messages_sent if use_v2v else 0
+        renderer.draw_ui(world.time, world.step_count, args.mode.upper(), 
+                        len(vehicles), collisions, messages)
         
         renderer.update()
         renderer.tick(int(args.fps * args.speed))
