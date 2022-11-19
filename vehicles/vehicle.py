@@ -113,6 +113,11 @@ class Vehicle:
         """Steer toward a target position"""
         dx = target_x - self.x
         dy = target_y - self.y
+        dist = np.sqrt(dx**2 + dy**2)
+        
+        if dist < 0.1:  # already very close
+            return
+        
         target_heading = np.arctan2(dy, dx)
         
         # Smooth heading change
