@@ -165,8 +165,12 @@ class Renderer:
                                  (int(intent_pos[0]), int(intent_pos[1])), 4)
         
         # Draw vehicle ID
-        id_text = self.small_font.render(str(vehicle.id), True, self.BLACK)
-        self.screen.blit(id_text, (pos[0] + 10, pos[1] - 10))
+        id_text = self.small_font.render(str(vehicle.id), True, self.WHITE)
+        # Draw with background for visibility
+        text_rect = id_text.get_rect()
+        text_rect.topleft = (pos[0] + 10, pos[1] - 10)
+        pygame.draw.rect(self.screen, (0, 0, 0, 180), text_rect.inflate(4, 2))
+        self.screen.blit(id_text, text_rect)
     
     def draw_v2v_connections(self, vehicle: Vehicle, nearby_vehicles: List[V2VMessage],
                             comm_radius: float):
