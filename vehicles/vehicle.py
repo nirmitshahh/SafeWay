@@ -3,6 +3,15 @@ from typing import List, Tuple, Optional
 from enum import Enum
 
 
+def normalize_angle(angle: float) -> float:
+    """Normalize angle to [0, 2*pi]"""
+    while angle < 0:
+        angle += 2 * np.pi
+    while angle >= 2 * np.pi:
+        angle -= 2 * np.pi
+    return angle
+
+
 class Intent(Enum):
     STRAIGHT = "straight"
     LEFT = "left"
@@ -146,4 +155,47 @@ class Vehicle:
         """Stop the vehicle"""
         self.speed = 0.0
         self.intent = Intent.STOP
+    
+    def update_control(self, dt: float):
+        """Update vehicle control (steering and speed)"""
+        waypoint_threshold = 0.5
+        max_turn_rate = 0.15
+        
+        # Check if reached waypoint
+        if self.reached_waypoint(waypoint_threshold):
+            self.advance_path()
+        
+        # Get next waypoint
+        waypoint = self.get_next_waypoint()
+        
+        if waypoint:
+            # Steer toward waypoint
+            dx = waypoint[0] - self.x
+            dy = waypoint[1] - self.y
+            target_heading = np.arctan2(dy, dx)
+            
+            # Calculate heading difference
+            angle_diff = target_heading - self.heading
+            
+            # Normalize to [-pi, pi]
+            while angle_diff > np.pi:
+                angle_diff -= 2 * np.pi
+            while angle_diff < -np.pi:
+                angle_diff += 2 * np.pi
+            
+            # Apply turn rate limit
+            turn = np.clip(angle_diff, -max_turn_rate, max_turn_rate)
+            self.heading += turn
+            self.heading = normalize_angle(self.heading)
+            
+            # Speed control
+            if not self.is_yielding:
+                self.accelerate(dt)
+            else:
+                self.decelerate(dt, self.preferred_speed * 0.5)
+        else:
+            # No path or reached destination
+            self.decelerate(dt, 0.0)
+            if self.speed < 0.1:
+                self.stop()
 

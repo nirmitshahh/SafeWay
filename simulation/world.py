@@ -2,7 +2,6 @@ import numpy as np
 from typing import List, Dict, Optional, Tuple
 from simulation.map import Map
 from vehicles.vehicle import Vehicle
-from vehicles.controller import VehicleController
 from planning.pathfinder import PathFinder
 from planning.conflict_resolver import ConflictResolver
 from v2v.comm_bus import CommunicationBus
@@ -19,7 +18,6 @@ class World:
         self.map = map_obj
         self.use_v2v = use_v2v
         self.vehicles: Dict[int, Vehicle] = {}
-        self.controllers: Dict[int, VehicleController] = {}
         self.pathfinder = PathFinder(map_obj)
         self.conflict_resolver = ConflictResolver()
         self.comm_bus = CommunicationBus(broadcast_radius, latency, packet_drop_rate)
@@ -31,7 +29,6 @@ class World:
     def add_vehicle(self, vehicle: Vehicle, destination: Optional[Tuple[float, float]] = None):
         """Add a vehicle to the world"""
         self.vehicles[vehicle.id] = vehicle
-        self.controllers[vehicle.id] = VehicleController(vehicle)
         
         # Plan initial path if destination provided
         if destination:
@@ -55,9 +52,8 @@ class World:
             self._process_v2v_communication()
         
         # Update vehicle behaviors
-        for vehicle_id, vehicle in self.vehicles.items():
-            controller = self.controllers[vehicle_id]
-            controller.update(self.dt)
+        for vehicle in self.vehicles.values():
+            vehicle.update_control(self.dt)
         
         # Update positions
         for vehicle in self.vehicles.values():
