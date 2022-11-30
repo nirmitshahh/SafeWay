@@ -1,11 +1,11 @@
 import numpy as np
+import json
 from typing import List, Dict, Optional, Tuple
 from simulation.map import Map
 from vehicles.vehicle import Vehicle
 from planning.pathfinder import PathFinder
 from planning.conflict_resolver import ConflictResolver
-from v2v.comm_bus import CommunicationBus
-from v2v.message import V2VMessage
+from v2v.comm_bus import CommunicationBus, V2VMessage
 
 
 class World:

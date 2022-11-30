@@ -1,7 +1,21 @@
 import numpy as np
 from typing import List, Dict, Optional, Tuple
-from v2v.message import V2VMessage
+from dataclasses import dataclass
+from vehicles.vehicle import Intent
 import random
+
+
+@dataclass
+class V2VMessage:
+    """Message format for vehicle-to-vehicle communication"""
+    sender_id: int
+    position: Tuple[float, float]  # (x, y)
+    velocity: Tuple[float, float]  # (vx, vy)
+    heading: float  # radians
+    speed: float
+    intent: Intent
+    planned_trajectory: List[Tuple[float, float]]  # next N positions
+    timestamp: float
 
 
 class CommunicationBus:

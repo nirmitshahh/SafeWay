@@ -8,8 +8,7 @@ import argparse
 import sys
 import pygame
 from simulation.map import Map
-from simulation.world import World
-from simulation.scenario import load_scenario, create_vehicles_from_scenario
+from simulation.world import World, load_scenario, create_vehicles_from_scenario
 from visualization.renderer import Renderer
 
 
